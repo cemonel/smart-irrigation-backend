@@ -1,0 +1,25 @@
+  version: '3'
+
+  services:
+    db:
+      image: postgres
+      environment:
+        - POSTGRES_DB=postgres
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=postgres
+      volumes:
+        - ".data/db:/var/lib/postgresql/data"
+      ports:
+        - "5432:5432"
+
+    smart-irrigation:
+      build: .
+      volumes:
+        - .:/smart_irrigation
+        -  .data/root:/root
+      ports:
+        - "7373:7373"
+      restart: unless-stopped
+      tty: true
+      depends_on:
+        - db
