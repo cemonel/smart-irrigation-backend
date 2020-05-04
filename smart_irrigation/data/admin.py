@@ -8,7 +8,7 @@ es_formats.DATETIME_FORMAT = "d M Y H:i:s"
 # Register your models here.
 class DataAdmin(admin.ModelAdmin):
     fieldsets = [
-        ('Details', {'fields': ('date', 'soil_moisture', 'air_temperature', 'air_humidity', 'epoch')}),
+        ('Details', {'fields': ('date', 'soil_moisture', 'air_temperature', 'air_humidity', 'epoch', 'plant',)}),
     ]
 
     list_display = ('id', 'date', 'soil_moisture', 'air_temperature', 'air_humidity', 'plant', 'epoch')

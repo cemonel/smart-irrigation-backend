@@ -1,5 +1,3 @@
-from django.db import models
-
 from smart_irrigation.plant.models import Plant
 from django.db import models
 
@@ -26,3 +24,6 @@ class Data(models.Model):
 
     class Meta:
         verbose_name_plural = 'Data'
+
+    def __str__(self):
+        return str(self.date)

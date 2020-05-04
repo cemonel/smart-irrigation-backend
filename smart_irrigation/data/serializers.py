@@ -11,14 +11,8 @@ class DataSerializer(serializers.ModelSerializer):
         model = Data
         fields = (
             'id',
-            'plant',
             'air_temperature',
             'air_humidity',
             'soil_moisture',
             'date',
         )
-
-    def validate_date(self, date):
-        ts_epoch = date
-        return datetime.datetime.fromtimestamp(ts_epoch).strftime('%Y-%m-%d %H:%M:%S')
-

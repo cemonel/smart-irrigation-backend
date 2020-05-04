@@ -23,4 +23,5 @@ import smart_irrigation.data as data
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('data/', include('smart_irrigation.data.urls')),
+    path('plant/', include('smart_irrigation.plant.urls')),
 ]

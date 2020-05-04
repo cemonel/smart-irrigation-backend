@@ -15,6 +15,7 @@ class BaseManager(models.Manager):
 class Plant(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
+    last_irrigation_date = models.DateTimeField(blank=True, verbose_name="Date", default=None, null=True)
 
     objects = BaseManager()
 
