@@ -4,7 +4,7 @@ import datetime
 import pandas as pd
 from scipy.signal import argrelextrema
 import numpy
-from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.pipeline import Pipeline
 
 
@@ -78,16 +78,14 @@ def calculate_threshold_value():
     # pd.set_option('display.max_rows', irrigation_data_boolean.shape[0] + 1) # Uncomment to see every row
     # print(irrigation_data_boolean.describe())
 
-    pipeline3 = Pipeline([
-        ('classifier', LogisticRegression(random_state=0, solver='lbfgs', multi_class='multinomial')),
+    pipeline = Pipeline([
+        ('classifier', GradientBoostingClassifier()),
     ])
 
-    pipeline3.fit(irrigation_data, irrigation_data_boolean)
+    pipeline.fit(irrigation_data, irrigation_data_boolean)
     print("fit oldu")
-    predictions = pipeline3.predict(new_data)
+    predictions = pipeline.predict(new_data)
     print(predictions)
-
-    # print(irrigation_data)
 
 
 class Command(BaseCommand):
