@@ -12,13 +12,12 @@ from django.core.management.base import BaseCommand, CommandError
 from smart_irrigation.data.models import Data
 
 
-def calculate_threshold_value():
+def decide_irrigation():
     data = list(Data.objects.all())
     train_data = data[:-150]  # Old data for training
     new_data = data[-150:]  # 150*2 seconds last 5 minutes data
     irrigation_data_ = []
     new_data_ = []
-
 
     for datum in train_data:
         date = datetime.datetime.fromtimestamp(datum.epoch).strftime('%Y-%m-%d %H:%M:%S')
@@ -94,5 +93,5 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         while True:
-            calculate_threshold_value()
+            decide_irrigation()
             time.sleep(600)
