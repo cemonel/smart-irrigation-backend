@@ -8,14 +8,15 @@ from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.pipeline import Pipeline
 
 
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from smart_irrigation.data.models import Data
+from smart_irrigation.plant.models import Plant
 
 
 def decide_irrigation():
-    data = list(Data.objects.all())
-    train_data = data[:-150]  # Old data for training
-    new_data = data[-150:]  # 150*2 seconds last 5 minutes data
+    data = list(Data.objects.filter(plant_id=1))
+    train_data = data[:-5]  # Old data for training
+    new_data = data[-5:]  # seconds last 5 minutes data
     irrigation_data_ = []
     new_data_ = []
 
@@ -84,7 +85,17 @@ def decide_irrigation():
     pipeline.fit(irrigation_data, irrigation_data_boolean)
     print("fit oldu")
     predictions = pipeline.predict(new_data)
-    print(predictions)
+    count = 0
+
+    for i in predictions:
+        if i == 0:
+            count = count + 1
+        if count == 5:
+            print('Irrigation Time.')
+            plant = Plant.objects.get(plant_id=1)
+            plant.status = Plant.STATUS_IRRIGATE
+            plant.last_irrigation_date = datetime.datetime.now()
+            plant.save()
 
 
 class Command(BaseCommand):

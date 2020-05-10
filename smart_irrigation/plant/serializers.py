@@ -91,3 +91,12 @@ class PlantDetailSerializer(serializers.ModelSerializer):
 
     def get_avg_soil_moisture(self, avg_soil_moisture):
         return Data.objects.aggregate(Avg('soil_moisture'))
+
+
+class PlantIrrigationSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Plant
+        fields = (
+            'status',
+        )
