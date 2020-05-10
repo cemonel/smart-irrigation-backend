@@ -19,7 +19,7 @@ class Plant(models.Model):
 
     STATUS_CHOICES = (
         (STATUS_WAIT, "Wait"),
-        (STATUS_IRRIGATE, "Irriate"),
+        (STATUS_IRRIGATE, "Irrigate"),
     )
 
     id = models.AutoField(primary_key=True)
