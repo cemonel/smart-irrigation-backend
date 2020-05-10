@@ -56,5 +56,6 @@ class IrrigatePlantView(APIView):
     def get(self, request, *args, **kwargs):
         plant = Plant.objects.get(id=self.kwargs["id"])
         plant.status = Plant.STATUS_IRRIGATE
+        plant.irrigation_count = plant.irrigation_count + 1
         plant.save()
         return Response()

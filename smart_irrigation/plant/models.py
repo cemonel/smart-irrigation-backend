@@ -26,6 +26,7 @@ class Plant(models.Model):
     name = models.CharField(max_length=50)
     last_irrigation_date = models.DateTimeField(blank=True, verbose_name="Date", default=None, null=True)
     status = models.CharField(max_length=10, default=STATUS_WAIT, choices=STATUS_CHOICES)
+    irrigation_count = models.IntegerField(default=0)
 
     objects = BaseManager()
 
