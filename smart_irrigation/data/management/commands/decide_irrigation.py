@@ -59,7 +59,7 @@ def decide_irrigation():
     new_data_max_soil_moisture = new_data['soil_moisture'].max()
     new_data['soil_moisture'] = new_data['soil_moisture'].apply(lambda x: new_data_max_soil_moisture - x)
     new_data_max_soil_moisture = new_data['soil_moisture'].max()
-    min_soil_moisture = new_data['soil_moisture'].min()
+    new_data_min_soil_moisture = new_data['soil_moisture'].min()
 
     irrigation_data['soil_moisture'] = irrigation_data['soil_moisture'].apply(lambda x: (x / max_soil_moisture) * 100)
     new_data['soil_moisture'] = new_data['soil_moisture'].apply(lambda x: (x / new_data_max_soil_moisture) * 100)
@@ -68,10 +68,17 @@ def decide_irrigation():
     n = 50  # number of points to be checked before and after
 
     irrigation_data['min'] = irrigation_data.iloc[argrelextrema(irrigation_data.soil_moisture.values, numpy.less_equal, order=n)[0]]['soil_moisture']
+    threshold_value = irrigation_data.mean(axis=0, skipna=True)[3]
     irrigation_data["boolean"] = irrigation_data["min"]
     irrigation_data.drop(columns=['min'], inplace=True)
     irrigation_data["boolean"].fillna(0, inplace=True)
-    irrigation_data.loc[irrigation_data["boolean"] != 0, "boolean"] = 1
+
+    for index, i in enumerate(irrigation_data["soil_moisture"]):
+        if i < threshold_value:
+            irrigation_data["boolean"][index] = 1
+        else:
+            irrigation_data["boolean"][index] = 0
+
     irrigation_data.dropna(inplace=True)
     irrigation_data_boolean = irrigation_data['boolean']
     irrigation_data.drop(columns=['boolean'], inplace=True)
@@ -87,15 +94,17 @@ def decide_irrigation():
     predictions = pipeline.predict(new_data)
     count = 0
 
-    for i in predictions:
-        if i == 0:
+    for i in predictions:  # More than 5 irrigate
+        if i == 1:
             count = count + 1
-        if count == 5:
-            print('Irrigation Time.')
-            plant = Plant.objects.get(plant_id=1)
-            plant.status = Plant.STATUS_IRRIGATE
-            plant.last_irrigation_date = datetime.datetime.now()
-            plant.save()
+
+    if count >= 5:
+        print('Irrigation Time.')
+        plant = Plant.objects.get(plant_id=1)
+        plant.status = Plant.STATUS_IRRIGATE
+        plant.last_irrigation_date = datetime.datetime.now()
+        plant.irrigation_count = plant.irrigation_count + 1
+        plant.save()
 
 
 class Command(BaseCommand):

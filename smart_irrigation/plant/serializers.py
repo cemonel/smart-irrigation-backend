@@ -60,11 +60,13 @@ class PlantDetailSerializer(serializers.ModelSerializer):
 
     def get_max_soil_moisture(self, max_soil_moisture):
         max_soil_moisture = Data.objects.filter().values_list('soil_moisture').order_by('soil_moisture').first()
-        return max_soil_moisture
+        min_soil_moisture = Data.objects.filter().values_list('soil_moisture').order_by('soil_moisture').last()
+
+        return 100 - (max_soil_moisture[0] / (min_soil_moisture[0]) * 100)
 
     def get_min_soil_moisture(self, min_soil_moisture):
         min_soil_moisture = Data.objects.filter().values_list('soil_moisture').order_by('soil_moisture').last()
-        return min_soil_moisture
+        return 100 - (min_soil_moisture[0] / (min_soil_moisture[0]) * 100)
 
     def get_max_air_humidity(self, max_air_humidity):
         max_air_humidity = Data.objects.filter().values_list('air_humidity').order_by('air_humidity').last()
@@ -78,7 +80,8 @@ class PlantDetailSerializer(serializers.ModelSerializer):
         return Data.objects.all().values_list('air_temperature').last()
 
     def get_current_soil_moisture(self, current_soil_moisture):
-        return Data.objects.all().values_list('soil_moisture').last()
+        min_soil_moisture = Data.objects.filter().values_list('soil_moisture').order_by('soil_moisture').last()
+        return 100 - (Data.objects.all().values_list('soil_moisture').last()[0] / (min_soil_moisture[0]) * 100)
 
     def get_current_air_humidity(self, current_air_humidity):
         return Data.objects.all().values_list('air_humidity').last()
