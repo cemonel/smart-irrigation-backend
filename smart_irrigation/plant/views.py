@@ -1,3 +1,5 @@
+import datetime
+
 from django.conf import settings
 from django.db.models import F
 
@@ -57,5 +59,6 @@ class IrrigatePlantView(APIView):
         plant = Plant.objects.get(id=self.kwargs["id"])
         plant.status = Plant.STATUS_IRRIGATE
         plant.irrigation_count = plant.irrigation_count + 1
+        plant.last_irrigation_date = datetime.datetime.now()
         plant.save()
         return Response()

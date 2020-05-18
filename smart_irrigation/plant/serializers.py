@@ -51,11 +51,11 @@ class PlantDetailSerializer(serializers.ModelSerializer):
         )
 
     def get_max_temperature(self, max_temperature):
-        max_temperature = Data.objects.filter().values_list('air_temperature').order_by('air_temperature').first()
+        max_temperature = Data.objects.filter().values_list('air_temperature').order_by('air_temperature').last()
         return max_temperature
 
     def get_min_temperature(self, min_temperature):
-        min_temperature = Data.objects.filter().values_list('air_temperature').order_by('air_temperature').last()
+        min_temperature = Data.objects.filter().values_list('air_temperature').order_by('air_temperature').first()
         return min_temperature
 
     def get_max_soil_moisture(self, max_soil_moisture):
@@ -67,11 +67,11 @@ class PlantDetailSerializer(serializers.ModelSerializer):
         return min_soil_moisture
 
     def get_max_air_humidity(self, max_air_humidity):
-        max_air_humidity = Data.objects.filter().values_list('air_humidity').order_by('air_humidity').first()
+        max_air_humidity = Data.objects.filter().values_list('air_humidity').order_by('air_humidity').last()
         return max_air_humidity
 
     def get_min_air_humidity(self, min_air_humidity):
-        min_air_humidity = Data.objects.filter().values_list('air_humidity').order_by('air_humidity').last()
+        min_air_humidity = Data.objects.filter().values_list('air_humidity').order_by('air_humidity').first()
         return min_air_humidity
 
     def get_current_temperature(self, current_temperature):
