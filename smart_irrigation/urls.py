@@ -16,9 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include
 from django.urls import path, re_path
-
+from django.contrib import admin
 
 import smart_irrigation.data as data
+
+
+admin.site.site_header = 'Smart Irrıgation Data Center'
 
 urlpatterns = [
     path('admin/', admin.site.urls),

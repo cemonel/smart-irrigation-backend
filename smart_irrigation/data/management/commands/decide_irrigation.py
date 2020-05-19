@@ -40,9 +40,9 @@ def decide_irrigation():
     irrigation_data.set_index(irrigation_data['time'], inplace=True)
     new_data.set_index(new_data['time'], inplace=True)
 
-    # #  Extract as Json
-    # with open('temp.json', 'w') as f:
-    #     f.write(irrigation_data.to_json(orient='records', lines=True))
+    #  Extract as Json
+    with open('temp.json', 'w') as f:
+        f.write(irrigation_data.to_json(orient='records', lines=True))
 
     del irrigation_data['time']
     del irrigation_data['epoch_time']
@@ -51,26 +51,25 @@ def decide_irrigation():
 
     # Soil-Moisture Percentage Calculation
     max_soil_moisture = irrigation_data['soil_moisture'].max()
+    old_max_soil_moisture = max_soil_moisture
     irrigation_data['soil_moisture'] = irrigation_data['soil_moisture'].apply(lambda x: max_soil_moisture - x)
     max_soil_moisture = irrigation_data['soil_moisture'].max()
     min_soil_moisture = irrigation_data['soil_moisture'].min()
 
     # Soil-Moisture Percentage Calculation
-    new_data_max_soil_moisture = new_data['soil_moisture'].max()
-    new_data['soil_moisture'] = new_data['soil_moisture'].apply(lambda x: new_data_max_soil_moisture - x)
-    new_data_max_soil_moisture = new_data['soil_moisture'].max()
-    new_data_min_soil_moisture = new_data['soil_moisture'].min()
+    new_data['soil_moisture'] = new_data['soil_moisture'].apply(lambda x: old_max_soil_moisture - x)
 
     irrigation_data['soil_moisture'] = irrigation_data['soil_moisture'].apply(lambda x: (x / max_soil_moisture) * 100)
-    new_data['soil_moisture'] = new_data['soil_moisture'].apply(lambda x: (x / new_data_max_soil_moisture) * 100)
+    new_data['soil_moisture'] = new_data['soil_moisture'].apply(lambda x: (x / max_soil_moisture) * 100)
 
     # Mark local minimum points
     n = 50  # number of points to be checked before and after
 
-    print(pd.Series(irrigation_data.index).duplicated().sum())
+    # irrigation_data = irrigation_data.loc[:,~irrigation_data.rows.duplicated()] #  Removes duplicate columns
+    irrigation_data = irrigation_data[~irrigation_data.index.duplicated()]
     irrigation_data['min'] = irrigation_data.iloc[argrelextrema(irrigation_data.soil_moisture.values, numpy.less_equal, order=n)[0]]['soil_moisture']
     threshold_value = irrigation_data.mean(axis=0, skipna=True)[3]
-    print("Threshold value:" + threshold_value)
+    print("Threshold value:" + str(threshold_value.item()))
     irrigation_data["boolean"] = irrigation_data["min"]
     irrigation_data.drop(columns=['min'], inplace=True)
     irrigation_data["boolean"].fillna(0, inplace=True)
