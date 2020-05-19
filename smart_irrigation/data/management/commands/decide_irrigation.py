@@ -112,7 +112,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         plant = Plant.objects.get(id=1)
-        if plant.irrigation_count > 3:
-            while True:
-                decide_irrigation()
-                time.sleep(600)
+        while True:
+            if plant.irrigation_count > 3:
+                while True:
+                    decide_irrigation()
+                    time.sleep(600)
