@@ -111,9 +111,11 @@ class Command(BaseCommand):
     help = ''
 
     def handle(self, *args, **options):
-        plant = Plant.objects.get(id=1)
         while True:
-            if plant.irrigation_count > 3:
+            plant = Plant.objects.get(id=1)
+            if plant.irrigation_count > 2:
                 while True:
+                    print("Deciding...")
                     decide_irrigation()
                     time.sleep(600)
+            print("Waiting for 3rd irrigation. Current Irrigation: " + plant.irrigation_count)
