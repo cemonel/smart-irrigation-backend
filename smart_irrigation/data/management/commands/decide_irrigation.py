@@ -100,7 +100,7 @@ def decide_irrigation():
 
     if count >= 5:
         print('Irrigation Time.')
-        plant = Plant.objects.get(plant_id=1)
+        plant = Plant.objects.get(id=1)
         plant.status = Plant.STATUS_IRRIGATE
         plant.last_irrigation_date = datetime.datetime.now()
         plant.irrigation_count = plant.irrigation_count + 1
@@ -111,7 +111,7 @@ class Command(BaseCommand):
     help = ''
 
     def handle(self, *args, **options):
-        plant = Plant.objects.get(plant_id=1)
+        plant = Plant.objects.get(id=1)
         if plant.irrigation_count > 3:
             while True:
                 decide_irrigation()
