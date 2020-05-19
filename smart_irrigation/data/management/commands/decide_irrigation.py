@@ -69,6 +69,7 @@ def decide_irrigation():
 
     irrigation_data['min'] = irrigation_data.iloc[argrelextrema(irrigation_data.soil_moisture.values, numpy.less_equal, order=n)[0]]['soil_moisture']
     threshold_value = irrigation_data.mean(axis=0, skipna=True)[3]
+    print("Threshold value:" + threshold_value)
     irrigation_data["boolean"] = irrigation_data["min"]
     irrigation_data.drop(columns=['min'], inplace=True)
     irrigation_data["boolean"].fillna(0, inplace=True)
@@ -90,7 +91,8 @@ def decide_irrigation():
     ])
 
     pipeline.fit(irrigation_data, irrigation_data_boolean)
-    print("fit oldu")
+    print("Fitting:")
+    print(new_data)
     predictions = pipeline.predict(new_data)
     count = 0
 
