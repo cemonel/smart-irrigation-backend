@@ -17,6 +17,7 @@ class PlantSerializer(serializers.ModelSerializer):
 
 
 class PlantDetailSerializer(serializers.ModelSerializer):
+    last_irrigation_date = serializers.DateTimeField(format="%Y-%m-%dT%H:%M:%S", read_only=True)
     max_temperature = serializers.SerializerMethodField(read_only=True)
     min_temperature = serializers.SerializerMethodField(read_only=True)
     max_soil_moisture = serializers.SerializerMethodField(read_only=True)
