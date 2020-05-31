@@ -40,7 +40,7 @@ INSTALLED_APPS = [
 
     'smart_irrigation.plant',
     'smart_irrigation.data',
-    'django.contrib.gis',
+    # 'django.contrib.gis',
 ]
 
 MIDDLEWARE = [
