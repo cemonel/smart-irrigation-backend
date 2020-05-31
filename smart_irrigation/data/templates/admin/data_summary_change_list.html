@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+{% extends "admin/change_list.html" %}
+{% block content_title %}
+    <h1> Irrigation Summary </h1>
+{% endblock %}
+{% block result_list %}
+<div class="results">
+<!DOCTYPE HTML>
+<html>
+<head>
+<script>
+window.onload = function () {
+    var plants  = {{ plants|safe }};
+    console.log(plants);
+    {#console.log(new Date(plants[0].data_list[0].epoch*1000));#}
+    {#console.log(plants[0].data_list[0].epoch);#}
+
+    for (i = 0; i < 1 ; i++) {
+
+        var temperature_list = [];
+        var soil_list = [];
+        var hum_list = [];
+        var j = 0;
+
+        for (j = 0; j < plants[i].data_list.length ; j++){
+            var dict = {x: new Date(plants[i].data_list[j].epoch*1000), y: plants[i].data_list[j].air_temperature };
+            temperature_list.push(dict)
+        }
+        console.log(temperature_list);
+
+        for (j = 0; j < plants[i].data_list.length ; j++){
+            dict = {x: new Date(plants[i].data_list[j].epoch*1000), y: plants[i].data_list[j].air_humidity };
+            hum_list.push(dict)
+        }
+
+        for (j = 0; j < plants[i].data_list.length ; j++){
+            dict = {x: new Date(plants[i].data_list[j].epoch*1000), y: plants[i].data_list[j].soil_moisture };
+            soil_list.push(dict)
+        }
+
+      var chart = new CanvasJS.Chart("chartContainer", {
+        title: {
+            text: "Irrigation Data of " + plants[i].plant_name
+        },
+        axisX: {
+            valueFormatString: "DD MMM YYYY HH:mm"
+        },
+        axisY2: {
+            title: "Temp - Humidity - Soil-Moisture",
+            prefix: "%",
+            suffix: ""
+        },
+        toolTip: {
+            shared: true
+        },
+        legend: {
+            cursor: "pointer",
+            verticalAlign: "top",
+            horizontalAlign: "center",
+            dockInsidePlotArea: true,
+            itemclick: toogleDataSeries
+        },
+        data: [{
+            type:"line",
+            axisYType: "secondary",
+            name: "temperature",
+            showInLegend: true,
+            markerSize: 0,
+            yValueFormatString: "#,### °C",
+            dataPoints: temperature_list
+        },
+        {
+            type:"line",
+            axisYType: "secondary",
+            name: "humidity",
+            showInLegend: true,
+            markerSize: 0,
+            yValueFormatString: "#,### °C",
+            dataPoints: hum_list
+        },
+        {
+            type:"line",
+            axisYType: "secondary",
+            name: "soil moisture",
+            showInLegend: true,
+            markerSize: 0,
+            yValueFormatString: "#,### %",
+            dataPoints: soil_list
+        },
+
+        ]
+    });
+      chart.render();
+    }
+
+
+
+function toogleDataSeries(e){
+	if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+		e.dataSeries.visible = false;
+	} else{
+		e.dataSeries.visible = true;
+	}
+	chart.render();
+}
+
+}
+</script>
+</head>
+<body>
+<div id="chartContainer" style="height: 370px; width: 100%;"></div>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+</body>
+</html>
+</div>
+{% endblock %}
+{% block pagination %}{% endblock %}

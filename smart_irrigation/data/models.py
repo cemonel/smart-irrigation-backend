@@ -27,3 +27,10 @@ class Data(models.Model):
 
     def __str__(self):
         return str(self.date)
+
+
+class DataSummary(Data):
+    class Meta:
+        proxy = True
+        verbose_name = 'Data Summary'
+        verbose_name_plural = 'Data Summary'

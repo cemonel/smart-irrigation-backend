@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     'smart_irrigation.plant',
     'smart_irrigation.data',
+    'django.contrib.gis',
 ]
 
 MIDDLEWARE = [
@@ -127,5 +128,6 @@ DATABASES = {
     }
 
 }
+
 
 SENSOR_FREQUENCY = 1  # DATA IN MINUTES
