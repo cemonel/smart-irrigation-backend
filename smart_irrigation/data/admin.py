@@ -68,6 +68,13 @@ class SaleSummaryAdmin(admin.ModelAdmin):
         item_json = json.dumps(plant_list, cls=DjangoJSONEncoder)
 
         response.context_data['plants'] = item_json
+
+        min_soil = Data.objects.filter().values_list('soil_moisture').order_by('soil_moisture').first()[0]
+        max_soil = Data.objects.filter().values_list('soil_moisture').order_by('soil_moisture').last()[0]
+
+        response.context_data['min_soil'] = min_soil
+        response.context_data['max_soil'] = max_soil
+
         return response
 
 
