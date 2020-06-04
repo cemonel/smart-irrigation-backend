@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'location_field.apps.DefaultConfig',
 
     'smart_irrigation.plant',
     'smart_irrigation.data',
@@ -129,5 +130,14 @@ DATABASES = {
 
 }
 
+LOCATION_FIELD = {
+    'provider.google.api': '//maps.google.com/maps/api/js?sensor=false',
+    'provider.google.api_key': 'AIzaSyBgIS1SYh5AS3-TCVLcxSNxMY5p3YdlpkI',
+    'provider.google.api_libraries': '',
+    'provider.google.map.type': 'ROADMAP',
+}
+
 
 SENSOR_FREQUENCY = 1  # DATA IN MINUTES
+
+GOOGLE_MAPS_V3_APIKEY = 'AIzaSyBgIS1SYh5AS3-TCVLcxSNxMY5p3YdlpkI'

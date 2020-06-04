@@ -19,6 +19,7 @@ class Data(models.Model):
     soil_moisture = models.IntegerField(blank=True, verbose_name="Soil Moisture")
     epoch = models.BigIntegerField(blank=True, verbose_name='Epoch Time')
     date = models.DateTimeField(blank=True, verbose_name="Date")
+    irrigation = models.BooleanField(default=False)
 
     objects = BaseManager
 
