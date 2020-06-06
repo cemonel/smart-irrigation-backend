@@ -44,6 +44,7 @@ class Plant(models.Model):
     irrigation_type = models.CharField(max_length=10, default=IRRIGATION_DRIP, choices=IRRIGATION_CHOICES)
     irrigation_duration = models.IntegerField(default=5)
     machine_learning = models.BooleanField(default=True)
+    max_manual_irrigation_for_machine_learning = models.IntegerField(default=3)
 
     objects = BaseManager()
 

@@ -15,7 +15,7 @@ from smart_irrigation.plant.models import Plant
 
 def decide_irrigation():
     data = list(Data.objects.filter(plant_id=1))
-    train_data = data[:-5]  # Old data for training
+    train_data = data[:-5]  # Old data for training. This is for test purposes this should be up to last manual irrigation.
     new_data = data[-5:]  # seconds last 5 minutes data
     irrigation_data_ = []
     new_data_ = []
@@ -115,7 +115,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         while True:
             plant = Plant.objects.get(id=1)
-            if plant.machine_learning and plant.irrigation_count > 2:
+            if plant.machine_learning and plant.irrigation_count > plant.max_manual_irrigation_for_machine_learning:
                 print("Deciding...")
                 decide_irrigation()
                 time.sleep(600)

@@ -19,7 +19,7 @@ class PlantDataDetailView(ListAPIView):
     lookup_field = "id"
 
     def get_queryset(self):
-        last_week_data = Data.objects.annotate(id_mod=F('id') % 480).filter(id_mod=0, plant_id=self.kwargs["id"]).order_by('-date')[:settings.SENSOR_FREQUENCY*3*7]  # last 1 weeks data
+        last_week_data = Data.objects.annotate(id_mod=F('id') % 1).filter(id_mod=0, plant_id=self.kwargs["id"]).order_by('-date').reverse()[:settings.SENSOR_FREQUENCY*3*7]  # last 1 weeks data
         return last_week_data
 
 

@@ -103,4 +103,5 @@ class PlantIrrigationSerializer(serializers.ModelSerializer):
         model = Plant
         fields = (
             'status',
+            'irrigation_duration'
         )
