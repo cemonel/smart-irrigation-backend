@@ -101,10 +101,10 @@ class PlantDetailSerializer(serializers.ModelSerializer):
         return Data.objects.aggregate(Avg('soil_moisture'))
 
     def get_max_soil_as_analog(self, max_soil_as_analog):
-        return Data.objects.filter().values_list('soil_moisture').order_by('soil_moisture').first()
+        return Data.objects.filter().values_list('soil_moisture').order_by('soil_moisture').first()[0]
 
     def get_min_soil_as_analog(self, min_soil_as_analog):
-        return Data.objects.filter().values_list('soil_moisture').order_by('soil_moisture').last()
+        return Data.objects.filter().values_list('soil_moisture').order_by('soil_moisture').last()[0]
 
 
 class PlantIrrigationSerializer(serializers.ModelSerializer):
