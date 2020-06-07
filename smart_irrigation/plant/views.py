@@ -1,7 +1,7 @@
 import datetime
 
-from django.conf import settings
 from django.db.models import F
+from django.utils.timezone import timedelta, now
 
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.views import APIView
@@ -19,9 +19,11 @@ class PlantDataDetailView(ListAPIView):
     lookup_field = "id"
 
     def get_queryset(self):
-        last_data = Data.objects.all().count()
-        last_week_data = Data.objects.annotate(id_mod=F('id') % 1).filter(id_mod=0, plant_id=self.kwargs["id"]).order_by('date')[last_data - settings.SENSOR_FREQUENCY*60*12:]  # last 1 weeks data
-        return last_week_data
+        last_data = Data.objects.all().order_by("-date")[0]
+        data = Data.objects.filter(id=last_data.id)
+        last_week_data = Data.objects.annotate(id_mod=F('id') % 60).filter(id_mod=0, plant_id=self.kwargs["id"]).order_by('date')  # last 1 weeks data
+        last_week_data = last_week_data.filter(date__gte=now() - timedelta(days=7))
+        return data | last_week_data
 
 
 class PlantDetailView(RetrieveAPIView):
