@@ -30,6 +30,8 @@ class PlantDetailSerializer(serializers.ModelSerializer):
     avg_air_humidity = serializers.SerializerMethodField(read_only=True)
     avg_temperature = serializers.SerializerMethodField(read_only=True)
     avg_soil_moisture = serializers.SerializerMethodField(read_only=True)
+    max_soil_as_analog = serializers.SerializerMethodField(read_only=True)
+    min_soil_as_analog = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Plant
@@ -49,6 +51,8 @@ class PlantDetailSerializer(serializers.ModelSerializer):
             'avg_temperature',
             'avg_soil_moisture',
             'avg_air_humidity',
+            'max_soil_as_analog',
+            'min_soil_as_analog'
         )
 
     def get_max_temperature(self, max_temperature):
@@ -95,6 +99,12 @@ class PlantDetailSerializer(serializers.ModelSerializer):
 
     def get_avg_soil_moisture(self, avg_soil_moisture):
         return Data.objects.aggregate(Avg('soil_moisture'))
+
+    def get_max_soil_as_analog(self, max_soil_as_analog):
+        return Data.objects.filter().values_list('soil_moisture').order_by('soil_moisture').first()
+
+    def get_min_soil_as_analog(self, min_soil_as_analog):
+        return Data.objects.filter().values_list('soil_moisture').order_by('soil_moisture').last()
 
 
 class PlantIrrigationSerializer(serializers.ModelSerializer):
