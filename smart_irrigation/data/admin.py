@@ -59,7 +59,7 @@ class SaleSummaryAdmin(admin.ModelAdmin):
 
         plant_list = []
 
-        for plant in Plant.objects.filter(name='Sardinia'):
+        for plant in Plant.objects.filter(name='Peace-Lilly'):
             plant_object = PlantAndData()
             plant_object.data_list = list(Data.objects.filter(plant_id=plant.id).values())
             plant_object.plant_name = plant.name
