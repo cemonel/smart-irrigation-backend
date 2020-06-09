@@ -59,7 +59,7 @@ class SaleSummaryAdmin(admin.ModelAdmin):
 
         plant_list = []
 
-        for plant in Plant.objects.all():
+        for plant in Plant.objects.filter(name='Sardinia'):
             plant_object = PlantAndData()
             plant_object.data_list = list(Data.objects.filter(plant_id=plant.id).values())
             plant_object.plant_name = plant.name
@@ -75,6 +75,7 @@ class SaleSummaryAdmin(admin.ModelAdmin):
         response.context_data['min_soil'] = min_soil
         response.context_data['max_soil'] = max_soil
 
+        print("cem")
         return response
 
 
