@@ -68,6 +68,8 @@ def decide_irrigation():
     # irrigation_data = irrigation_data.loc[:,~irrigation_data.rows.duplicated()] #  Removes duplicate columns
     irrigation_data = irrigation_data[~irrigation_data.index.duplicated()]
     irrigation_data['min'] = irrigation_data.iloc[argrelextrema(irrigation_data.soil_moisture.values, numpy.less_equal, order=n)[0]]['soil_moisture']
+    # Euclidean Distance
+    # Standart Deviation
     threshold_value = irrigation_data.mean(axis=0, skipna=True)[3]
     print("Threshold value:" + str(threshold_value.item()))
     irrigation_data["boolean"] = irrigation_data["min"]

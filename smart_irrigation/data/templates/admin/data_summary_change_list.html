@@ -38,7 +38,7 @@ window.onload = function () {
         }
 
         for (j = 0; j < plants[i].data_list.length ; j++){
-            dict = {x: new Date(plants[i].data_list[j].epoch*1000), y: ((max_soil - plants[i].data_list[j].soil_moisture) / (max_soil - min_soil) * 100) };
+            dict = {x: new Date(plants[i].data_list[j].epoch*1000), y: ((max_soil - plants[i].data_list[j].soil_moisture) / (max_soil - min_soil)) * 100};
             soil_list.push(dict)
         }
 
@@ -73,7 +73,6 @@ window.onload = function () {
             name: "temperature",
             showInLegend: true,
             markerSize: 0,
-            yValueFormatString: "#,### °C",
             dataPoints: temperature_list
         },
         {
@@ -82,7 +81,7 @@ window.onload = function () {
             name: "humidity",
             showInLegend: true,
             markerSize: 0,
-            yValueFormatString: "#,### %",
+            yValueFormatString: "##,## %",
             dataPoints: hum_list
         },
         {
@@ -91,7 +90,7 @@ window.onload = function () {
             name: "soil moisture",
             showInLegend: true,
             markerSize: 0,
-            yValueFormatString: "#,### %",
+            yValueFormatString: "##,## %",
             dataPoints: soil_list
         },
 
